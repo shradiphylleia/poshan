@@ -8,5 +8,15 @@ round 3 health_track_chatbot
 
 # goal[23 march,2025]
 1. working prototype which has chat feature(done)
-2. find database
+2. find database(done)
 3. script(isolated to send email) integrate with frontend(done)
+
+# goal[24 march,2025]
+1. make responses better--chances of typo
+2. setup the mailing function
+3. taking audio input.
+
+
+# goal[25 march,2025]
+1. google translate to support multilingual support
+2. login and auth to save email details
