@@ -7,6 +7,6 @@ round 3 health_track_chatbot
 
 
 # goal[23 march,2025]
-1. working prototype which has chat feature
+1. working prototype which has chat feature(done)
 2. find database
-3. script(isolated to send email) integrate with frontend
+3. script(isolated to send email) integrate with frontend(done)
