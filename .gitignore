@@ -2,3 +2,4 @@
 mail.py
 __pycache__
 *.py
+*.json
