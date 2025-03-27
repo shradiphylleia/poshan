@@ -5,8 +5,10 @@ st.write("poshan is a chatbot which enables you to ask questions for personalize
 st.divider()
 st.markdown("""Credits
 - graphics for the app logo were sourced from [Canva](https://www.canva.com)
-- emoji from [Emojis](https://emojis.wiki/reminder/), [Emojipedia](https://emojipedia.org/e-mail).
+- emoji from [Emojis](https://emojis.wiki/reminder/), [Emojipedia](https://emojipedia.org/e-mail)
+- speech to text [huggingface](https://huggingface.co)   
 - built with [streamlit](https://streamlit.io/)
+- gemini: for response model
 """)
 
 st.divider()

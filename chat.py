@@ -3,6 +3,8 @@ import time
 import re
 from mail_button import set_mail_reminder as reminder_btn
 from json_loader import load_json
+# from speech_2_text import speech_text
+from response_model import response_query
 
 json_data=load_json()
  
@@ -19,7 +21,7 @@ def get_response_json(user_query):
 def rsp(response):
     for word in response.split():
         yield word + " "
-        time.sleep(0.25)
+        time.sleep(0.2)
 
 
 
@@ -35,13 +37,36 @@ for msg in st.session_state.msgs:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
 
-# take the prompt & if the prompt is !none 
-if prompt:=st.chat_input("ask your query.."):
-    st.chat_message("user").markdown(prompt)
-    st.session_state.msgs.append({"role":"user","content":prompt})
 
-    ai_response=get_response_json(prompt)
+input_format=st.radio(
+    "how would you like to search your queries",
+    ['text','audio']
+)
 
-    with st.chat_message('ai'):
-        response=st.write_stream(rsp(ai_response))
-    st.session_state.msgs.append({'role':'ai','content':response})
+
+if input_format=='audio':
+    # audio_input=st.audio_input(label='speak your query',help='add audio input for your query')
+    # if audio_input:
+    #     prompt=speech_text(audio_input)
+    #     clean_prompt=re.sub(r"</?s>|<pad>", "",prompt).strip()
+    #     st.write(f"audio detected as:{clean_prompt}")
+        
+    #     ai_response=get_response_json(prompt)
+    #     with st.chat_message('ai'):
+    #         response=st.write_stream(rsp(ai_response))
+    #     st.session_state.msgs.append({'role':'ai','content':response})
+    st.write('constructing')
+
+
+else:
+    if prompt:=st.chat_input("ask your query.."):
+        st.chat_message("user").markdown(prompt)
+        st.session_state.msgs.append({"role":"user","content":prompt})
+        
+        ai_response=get_response_json(prompt)
+        if not ai_response:
+           ai_response=response_query(prompt_ques=prompt)
+
+        with st.chat_message('ai'):
+            response=st.write_stream(rsp(ai_response))
+        st.session_state.msgs.append({'role':'ai','content':response})

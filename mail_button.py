@@ -7,6 +7,6 @@ def set_mail_reminder():
     email=st.text_input("your email address")
     reminder_subject=st.text_input("enter the subject")
     reminder_content=st.text_input("enter the contents to the reminder mail")
+    reminder_date=st.text_input("enter date for the event")
     if st.button("enter"):
-        mail(user_email=email,subject=reminder_subject,content=reminder_content)
-
+        mail(user_email=email,subject=reminder_subject,content=reminder_content,date=reminder_date)
