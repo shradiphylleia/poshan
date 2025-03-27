@@ -1,6 +1,7 @@
 import streamlit as st
 import time
 import re
+import string
 from mail_button import set_mail_reminder as reminder_btn
 from json_loader import load_json
 # from speech_2_text import speech_text
@@ -9,13 +10,16 @@ from response_model import response_query
 json_data=load_json()
  
 def get_response_json(user_query):
+    user_query = user_query.lower().translate(str.maketrans('', '', string.punctuation))
+    
     for conv in json_data:
         for msg in conv["messages"]:
-            if msg["role"]=="user":
-                pattern=re.compile(re.escape(msg["text"]),re.IGNORECASE)
+            if msg["role"] == "user":
+                normalized_text = msg["text"].lower().translate(str.maketrans('', '', string.punctuation))       
+                pattern = re.compile(re.escape(normalized_text), re.IGNORECASE)
                 if pattern.search(user_query):
-                    return next((m["text"] for m in conv['messages'] if m['role']=='bot'),"Currently, unable to respond.poshan is in the works")
-    return "Currently, unable to respond.poshan is in the works"
+                    return next((m["text"] for m in conv['messages'] if m['role'] == 'bot'),None)  
+    return None
 
 
 def rsp(response):
@@ -65,7 +69,7 @@ else:
         
         ai_response=get_response_json(prompt)
         if not ai_response:
-           ai_response=response_query(prompt_ques=prompt)
+            ai_response=response_query(prompt_ques=prompt)
 
         with st.chat_message('ai'):
             response=st.write_stream(rsp(ai_response))
