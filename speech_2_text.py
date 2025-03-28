@@ -1,40 +1,51 @@
-# import torch
-# from transformers import Speech2TextProcessor, Speech2TextForConditionalGeneration
-# import soundfile as sf
-# import io
-# import torchaudio
+import io
+import torch
+import torchaudio
+import numpy as np
+from transformers import AutoProcessor, AutoModelForSpeechSeq2Seq
 
-# model = Speech2TextForConditionalGeneration.from_pretrained("facebook/s2t-medium-librispeech-asr")
-# processor = Speech2TextProcessor.from_pretrained("facebook/s2t-medium-librispeech-asr")
+MODEL_ID = "erax-ai/EraX-WoW-Turbo-V1.0"
+try:
+    PROCESSOR = AutoProcessor.from_pretrained(MODEL_ID)
+    MODEL = AutoModelForSpeechSeq2Seq.from_pretrained(MODEL_ID)
+except Exception as e:
+    print(f"Error initializing model: {e}")
+    PROCESSOR = None
+    MODEL = None
 
-# def speech_text(audio_file) -> str:
-#     """
-#     Converts speech to text.
+def speech_text(audio_input):
+    """
+    transcribe streamlit audio input to text using the pre-initialized model.
+    
+    Args:
+        audio_input:BytesIO object
+    
+    Returns:
+        str:text from the audio
+    """
+    if PROCESSOR is None or MODEL is None:
+        raise RuntimeError("Model was not properly initialized")
 
-#     Args:
-#         audio_file: 
+    try:
+        if not isinstance(audio_input, io.BytesIO):
+            audio_input = io.BytesIO(audio_input)
 
-#     Returns:
-#         str: text.
-#     """
-#     try:
-#         audio_data, sampling_rate = sf.read(io.BytesIO(audio_file.getvalue()), dtype="float32")
+        waveform, sample_rate = torchaudio.load(audio_input)
 
-#         target_sampling_rate = 16000
-#         if sampling_rate != target_sampling_rate:
-#             audio_data = torch.tensor(audio_data, dtype=torch.float32)
-#             audio_data = torchaudio.functional.resample(
-#                 audio_data, orig_freq=sampling_rate, new_freq=target_sampling_rate
-#             ).numpy()
+        if sample_rate != 16000:
+            resampler = torchaudio.transforms.Resample(orig_freq=sample_rate, new_freq=16000)
+            waveform = resampler(waveform)
 
-#         input_features = processor(audio_data, sampling_rate=target_sampling_rate, return_tensors="pt").input_features
+        waveform = waveform.numpy().squeeze()
+        inputs = PROCESSOR(waveform, sampling_rate=16000, return_tensors="pt")
 
-#         with torch.no_grad():
-#             generated_ids = model.generate(input_features=input_features)
-
-#         transcription = processor.batch_decode(generated_ids, skip_special_tokens=True)
-#         return transcription[0] if transcription else "Sorry, couldn't transcribe the audio."
-
-#     except Exception as e:
-#         return f"Error processing audio: {e}"
-
+        with torch.no_grad():
+            generated_ids = MODEL.generate(**inputs)
+        
+        transcription = PROCESSOR.batch_decode(generated_ids, skip_special_tokens=True)[0]
+        
+        return transcription
+    
+    except Exception as e:
+        print(f"Error during audio transcription: {e}")
+        return "" 

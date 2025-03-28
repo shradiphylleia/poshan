@@ -1,6 +1,6 @@
 import json
 import streamlit as st
-@st.c
+@st.cache_data
 def load_json(file_path='medical_chatbot_conversations.json'):
     try:
         with open(file_path,"r", encoding="utf-8") as file:

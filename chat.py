@@ -4,7 +4,7 @@ import re
 import string
 from mail_button import set_mail_reminder as reminder_btn
 from json_loader import load_json
-# from speech_2_text import speech_text
+from speech_2_text import speech_text
 from response_model import response_query
 
 json_data=load_json()
@@ -44,22 +44,26 @@ for msg in st.session_state.msgs:
 
 input_format=st.radio(
     "how would you like to search your queries",
-    ['text','audio']
-)
+    ['text','audio'])
 
 
 if input_format=='audio':
-    # audio_input=st.audio_input(label='speak your query',help='add audio input for your query')
-    # if audio_input:
-    #     prompt=speech_text(audio_input)
-    #     clean_prompt=re.sub(r"</?s>|<pad>", "",prompt).strip()
-    #     st.write(f"audio detected as:{clean_prompt}")
+    audio_input=st.audio_input(label='speak your query',help='add audio input for your query')
+    if audio_input:
         
-    #     ai_response=get_response_json(prompt)
-    #     with st.chat_message('ai'):
-    #         response=st.write_stream(rsp(ai_response))
-    #     st.session_state.msgs.append({'role':'ai','content':response})
-    st.write('constructing')
+        prompt=speech_text(audio_input)
+        
+        clean_prompt=re.sub(r"</?s>|<pad>", "",prompt).strip()
+        st.write(f"audio detected as:{clean_prompt}")
+        
+        ai_response=get_response_json(prompt)
+        if not ai_response:
+            ai_response=response_query(prompt_ques=prompt)
+
+        with st.chat_message('ai'):
+            response=st.write_stream(rsp(ai_response))
+        st.session_state.msgs.append({'role':'ai','content':response})
+
 
 
 else:

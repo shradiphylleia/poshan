@@ -31,4 +31,7 @@ run streamlit landing.py
 
 # goal[25 march,2025]
 1. google translate to support multilingual support(done 26 march)
-2. login and auth to save email details
+2. login and auth to save email details(on hold)
+
+# goal[28 march,2025]
+1. sos email--need auth
