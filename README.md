@@ -7,14 +7,51 @@ round 3 health_track_chatbot
 
 
 # Setting up locally
-1.  Run: pip install -r requirements.txt to get the required libs working
-2. create .env in the root dir with 
-EMAIL=email@domain.com
-PASSWORD=app password(recommended,please refrain from adding personal password)
-3. to launch the ui enter the below in cmd/terminal:
-run streamlit landing.py
+1. Prerequisites
+Ensure you have Python installed on your system. If not, download and install it from [python.org](https://www.python.org/downloads/).
 
+## Installation Steps
 
+1. Clone the Repository
+
+2. Install Dependencies
+   Run the following command to install the required libraries:
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+3. Set Up Environment Variables
+   Create a `.env` file in the root directory and add the following details:
+   ```env
+   EMAIL=email@domain.com
+   PASSWORD=your_app_password  # Use an app-specific password, not a personal one
+   API_KEY=your_gemini_api_key  # Obtain this from the Gemini API provider
+   ```
+
+4. Create FAQ Data File
+   Ensure a JSON file named `medical_chatbot_conversations.json` exists in the root directory. Format it according to your specifications for FAQs.
+   format:
+     [  {
+        "messages": [
+            {
+                "role": "user",
+                "text": "What does this website do?"
+            },
+            {
+                "role": "bot",
+                "text": "This website is your personal guide to health and fitness! Whether you're looking for workout plans, nutrition advice, or wellness tips, we've got you covered."
+            }
+        ]
+    }, ]
+
+5. Rename Response Model File
+   Change the extension of `response_model.md` to response_model.py
+
+6. Launch the UI
+   Run the following command in the terminal:
+   ```sh
+   streamlit run landing.py
+   ```
 
 # milestone marker
 ---internal milestone refernce puropse only----
