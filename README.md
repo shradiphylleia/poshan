@@ -30,7 +30,8 @@ Ensure you have Python installed on your system. If not, download and install it
 
 4. Create FAQ Data File
    Ensure a JSON file named `medical_chatbot_conversations.json` exists in the root directory. Format it according to your specifications for FAQs.
-   format:```
+   format:
+   ```
      [  {
         "messages": [
             {
