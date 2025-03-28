@@ -2,6 +2,14 @@ import streamlit as st
 st.image('poshan.png')
 st.write("poshan is a chatbot which enables you to ask questions for personalized diet suggestions, diseases and set reminders")
 
+st.subheader('food recommendations',divider=True)
+st.image('food.png')
+st.write('get personalized recommendations for diet')
+
+st.subheader('health and joy',divider=True)
+st.image('foodbowl.png')
+st.write('get personalized recommendations for diet')
+
 st.divider()
 st.markdown("""Credits
 - graphics for the app logo were sourced from [Canva](https://www.canva.com)
