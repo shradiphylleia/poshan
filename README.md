@@ -31,6 +31,7 @@ Ensure you have Python installed on your system. If not, download and install it
 4. Create FAQ Data File
    Ensure a JSON file named `medical_chatbot_conversations.json` exists in the root directory. Format it according to your specifications for FAQs.
    format:
+   ```
      [  {
         "messages": [
             {
@@ -43,11 +44,12 @@ Ensure you have Python installed on your system. If not, download and install it
             }
         ]
     }, ]
+   ```
 
-5. Rename Response Model File
+6. Rename Response Model File
    Change the extension of `response_model.md` to response_model.py
 
-6. Launch the UI
+7. Launch the UI
    Run the following command in the terminal:
    ```sh
    streamlit run landing.py
